@@ -23,7 +23,7 @@ It comes with a basic theme structure and configuration. GitHub action has been 
 
 ---
 
-In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git, Go and Hugo extended locally.**
+In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git and Go locally.** The workspace tasks use a repo-local Hugo bootstrapper that will install an extended Hugo binary into `.cache/hugo` the first time you run it.
 
 ## Update theme manually
 
