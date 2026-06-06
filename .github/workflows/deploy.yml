@@ -6,14 +6,18 @@ on:
     pull_request:
         branches: [master]
 
+concurrency:
+    group: "pages"
+    cancel-in-progress: false
+
 jobs:
     build:
         runs-on: ubuntu-latest
 
         permissions:
-            # Give the default GITHUB_TOKEN write permission to commit and push the
-            # added or changed files to the repository.
-            contents: write
+            contents: read
+            pages: write
+            id-token: write
 
         steps:
             - uses: actions/checkout@v4
@@ -39,13 +43,17 @@ jobs:
                   hugo-version: "latest"
                   extended: true
 
-            - name: Build
-              run: hugo --minify --gc
+                        - name: Setup Pages
+                            uses: actions/configure-pages@v5
 
-            - name: Deploy 🚀
-              uses: JamesIves/github-pages-deploy-action@v4
-              with:
-                  branch: gh-pages
-                  folder: public
-                  clean: true
-                  single-commit: true
+            - name: Build
+                            run: hugo --minify --gc
+
+                        - name: Upload artifact
+                            uses: actions/upload-pages-artifact@v3
+                            with:
+                                    path: ./public
+
+                        - name: Deploy to GitHub Pages
+                            id: deployment
+                            uses: actions/deploy-pages@v4
